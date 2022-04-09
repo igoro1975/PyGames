@@ -65,16 +65,15 @@ class player(object):
 
         for poor in people:
             if self.rect.colliderect(poor.rect):
-                draw_text = HAPPY_FONT.render("I am happy now!", 1, WHITE)
-                WIN.blit(draw_text, (WIDTH / 2 - draw_text.get_width() /
-                                     2, HEIGHT / 2 - draw_text.get_height() / 2))
-                pygame.display.update()
+                people.remove(poor)
 
 
 def main():
     hero = player(10, 10)
-    poor = man(300, 300)
-    people.append(poor)
+    poor1 = man(100, 100)
+    poor2 = man(200, 200)
+    people.append(poor1)
+    people.append(poor2)
     clock = pygame.time.Clock()
     run = True
     while run:
