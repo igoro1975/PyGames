@@ -32,13 +32,13 @@ class player(object):
         WIN.blit(self.box, (self.x, self.y))
 
     def handle_movement(self, keys_pressed):
-        if keys_pressed[pygame.K_LEFT]:  # LEFT
+        if keys_pressed[pygame.K_LEFT] and self.x - VEL > 0:  # LEFT
             self.x -= VEL
-        if keys_pressed[pygame.K_RIGHT]:  # RIGHT
+        if keys_pressed[pygame.K_RIGHT] and self.x + VEL + self.box.get_width() < WIDTH:  # RIGHT
             self.x += VEL
-        if keys_pressed[pygame.K_UP]:  # UP
+        if keys_pressed[pygame.K_UP] and self.y - VEL > 0:  # UP
             self.y -= VEL
-        if keys_pressed[pygame.K_DOWN]:  # DOWN
+        if keys_pressed[pygame.K_DOWN] and self.y + VEL + self.box.get_height() < HEIGHT:  # DOWN
             self.y += VEL
 
 
