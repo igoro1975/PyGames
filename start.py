@@ -1,5 +1,6 @@
 import pygame
 import os
+
 pygame.font.init()
 
 HAPPY_FONT = pygame.font.SysFont('comicsans', 50)
@@ -9,7 +10,35 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 # frames per second
 FPS = 60
 SPACE = pygame.transform.scale(pygame.image.load(
-    os.path.join('Assets', 'space.png')), (WIDTH, HEIGHT))
+    os.path.join('Assets', 'bg1.jpg')), (WIDTH, HEIGHT))
+
+
+# explanation https://coderslegacy.com/python/pygame-scrolling-background/
+class Background(object):
+    def __init__(self):
+        self.bgimage = pygame.image.load(os.path.join('Assets', 'bg1.jpg'))
+        self.rectBGimg = self.bgimage.get_rect()
+
+        self.bgY1 = 0
+        self.bgX1 = 0
+
+        self.bgY2 = 0
+        self.bgX2 = self.rectBGimg.width
+
+        self.moving_speed = 3
+
+    def update(self):
+        self.bgX1 -= self.moving_speed
+        self.bgX2 -= self.moving_speed
+        if self.bgX1 <= -self.rectBGimg.width:
+            self.bgX1 = self.rectBGimg.width
+        if self.bgX2 <= -self.rectBGimg.width:
+            self.bgX2 = self.rectBGimg.width
+
+    def render(self):
+        WIN.blit(self.bgimage, (self.bgX1, self.bgY1))
+        WIN.blit(self.bgimage, (self.bgX2, self.bgY2))
+
 
 pygame.display.set_caption("TBD Game's name")
 PLAYER_WIDTH, PLAYER_HEIGHT = 55, 40
@@ -17,8 +46,11 @@ VEL = 5
 people = []
 
 
-def draw_window(hero):
-    WIN.blit(SPACE, (0, 0))
+def draw_window(hero, background):
+    background.update()
+    background.render()
+
+    # WIN.blit(SPACE, (0, 0))
     WIN.blit(hero.box, (hero.x, hero.y))
     hero.draw(WIN)
 
@@ -75,6 +107,7 @@ def main():
     people.append(poor1)
     people.append(poor2)
     clock = pygame.time.Clock()
+    background = Background()
     run = True
     while run:
         clock.tick(FPS)
@@ -86,7 +119,7 @@ def main():
         keys_pressed = pygame.key.get_pressed()
         hero.handle_movement(keys_pressed)
 
-        draw_window(hero)
+        draw_window(hero, background)
 
 
 if __name__ == "__main__":
